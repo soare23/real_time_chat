@@ -11,17 +11,21 @@ io.on('connection', (socket) => {
   // Welcome new user
   socket.emit('message', 'Welcome to chat');
 
-  // Brodcast when a new user connects
-  socket.broadcast.emit('message', 'A user has joined the chat');
-
   // Brodcast when a user disconnects
   socket.on('disconnect', () => {
-    io.emit('message', 'A user has left the chat');
+    io.emit('message', 'An user has left the chat');
   });
 
   //Catch chat message and brodcast
-  socket.on('chat', ({ name, message }) => {
-    io.emit('message', { name, message });
+  socket.on('chat', ({ username, message }) => {
+    // io.emit('message', { username, message });
+    console.log(username + ' ' + message);
+  });
+
+  // Listen for new user and brodcast when he connects
+  socket.on('new user', (username) => {
+    console.log('the username from the server ' + username);
+    socket.broadcast.emit('message', username + ' has joined the chat');
   });
 });
 
